@@ -30,7 +30,9 @@ export const App: React.FC = () => {
 
       <HangmanDrawing />
       <HangmanWord />
-      <Keyboard />
+      <div style={{ alignSelf: 'stretch'}}>
+        <Keyboard />
+      </div>
     </div>
   )
 }
