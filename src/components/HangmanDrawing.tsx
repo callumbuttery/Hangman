@@ -22,12 +22,18 @@ const LEFT_LEG = (
     <div style={{ width: "100px", height: "10px", background: 'black', position: "absolute", top: "209px", right: "0px", rotate: '-60deg', transformOrigin: 'right bottom' }}></div>
 )
 
+const BODY_PARTS = [HEAD, BODY, RIGHT_ARM, LEFT_ARM, RIGHT_LEG, LEFT_LEG]
+
+type HangmanDrawingProps = {
+    numberOfGuesses: number
+}
 
 
-export const HangmanDrawing: React.FC = () => {
+export const HangmanDrawing: React.FC<HangmanDrawingProps> = (props) => {
     return (
         <div style={{ position: "relative" }}>
 
+            {BODY_PARTS.slice(0, props.numberOfGuesses)}
             <div style={{ height: "50px", width: "10px", top: 0, right: 0, position: 'absolute', background: 'black', marginLeft: "120px" }}></div>
 
             <div style={{ height: "10px", width: "200px", background: 'black', marginLeft: "120px" }}></div>
@@ -36,12 +42,6 @@ export const HangmanDrawing: React.FC = () => {
 
             <div style={{ height: "10px", width: "250px", background: 'black' }}></div>
 
-            {HEAD}
-            {BODY}
-            {RIGHT_ARM}
-            {LEFT_ARM}
-            {RIGHT_LEG}
-            {LEFT_LEG}
         </div>
     )
 }

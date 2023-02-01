@@ -8,10 +8,13 @@ import { Keyboard } from "./components/Keyboard";
 export const App: React.FC = () => {
 
   const [wordToGuess, setWordToGuess] = useState(() => {
-    return words[Math.floor(Math.random() * words.length)]
+    return 'test';
+    //return words[Math.floor(Math.random() * words.length)]
   });
 
-  const [guessedLetters, setGuessedLetters] = useState<string[]>([])
+  const [guessedLetters, setGuessedLetters] = useState<string[]>(['G'])
+
+  const incorrectLetters = guessedLetters.filter(letter => !wordToGuess.includes(letter))
 
   return (
     <div style={{
@@ -28,8 +31,8 @@ export const App: React.FC = () => {
         Win
       </div>
 
-      <HangmanDrawing />
-      <HangmanWord />
+      <HangmanDrawing numberOfGuesses={incorrectLetters.length}/>
+      <HangmanWord guessedLetters={incorrectLetters}, wordToGuess={wordToGuess}/>
       <div style={{ alignSelf: 'stretch'}}>
         <Keyboard />
       </div>
