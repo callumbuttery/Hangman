@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import words from './wordList.json'
 
 import { HangmanDrawing } from "./components/HangmanDrawing";
@@ -8,13 +8,36 @@ import { Keyboard } from "./components/Keyboard";
 export const App: React.FC = () => {
 
   const [wordToGuess, setWordToGuess] = useState(() => {
-    return 'test';
-    //return words[Math.floor(Math.random() * words.length)]
+    return words[Math.floor(Math.random() * words.length)]
   });
 
-  const [guessedLetters, setGuessedLetters] = useState<string[]>(['G'])
+  const [guessedLetters, setGuessedLetters] = useState<string[]>([])
 
   const incorrectLetters = guessedLetters.filter(letter => !wordToGuess.includes(letter))
+
+  const addGuessedLetter = useCallback((letter: string) =>{
+    if(guessedLetters.includes(letter)) return;
+    
+    setGuessedLetters(currentLetters => [...currentLetters, letter]);
+  }, [guessedLetters])
+
+
+  useEffect(() => {
+    const handler  = (e: KeyboardEvent) => {
+      const key = e.key;
+
+      if(!key.match(/^[a-z]$/)) return;
+
+      e.preventDefault();
+      addGuessedLetter(key);
+    }
+
+    document.addEventListener("keypress", handler);
+
+    return () => {
+      document.removeEventListener("keypress", handler);
+    }
+  }, [guessedLetters])
 
   return (
     <div style={{
@@ -32,7 +55,7 @@ export const App: React.FC = () => {
       </div>
 
       <HangmanDrawing numberOfGuesses={incorrectLetters.length}/>
-      <HangmanWord guessedLetters={incorrectLetters}, wordToGuess={wordToGuess}/>
+      <HangmanWord guessedLetters={guessedLetters} wordToGuess={wordToGuess}/>
       <div style={{ alignSelf: 'stretch'}}>
         <Keyboard />
       </div>
